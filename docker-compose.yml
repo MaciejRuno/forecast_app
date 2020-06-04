@@ -8,6 +8,8 @@ services:
       MYSQL_USER: forecast
       MYSQL_PASSWORD: forecast
       MYSQL_DATABASE: forecast
+    volumes:
+      - db:/var/lib/mysql
   nginx:
     image: nginx:1.15.3-alpine
     restart: on-failure
@@ -27,3 +29,5 @@ services:
     restart: on-failure
     volumes:
      - '.:/var/www'
+volumes:
+  db:
