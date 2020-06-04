@@ -1,27 +1,29 @@
 version:  '3.7'
 services:
-  mysql:
+  db:
     image: mysql:8.0
     restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: forecast
+      MYSQL_PASSWORD: forecast
       MYSQL_DATABASE: forecast
   nginx:
     image: nginx:1.15.3-alpine
     restart: on-failure
     depends_on:
-      - php
+      - app
     volumes:
       - './public:/var/www/app'
       - './docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro'
     ports:
       - '8080:80'
-  php:
+  app:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    depends_on:
+    - db
     restart: on-failure
     volumes:
      - '.:/var/www'
