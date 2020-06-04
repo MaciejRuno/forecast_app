@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forecast App{% endblock %}
+
+{% block body %}
+
+<h1 class="jumbotron text-center">Weather Forecast App</h1>
+
+<div class="d-flex justify-content-center container">
+    <form class="d-flex flex-column" action="/forecast" method="get">
+        <div class="form-group">
+            <label for="city">City: </label>
+            <input class="form-control" type="text" id="city" name="city" placeholder="Warsaw">
+        </div>
+        <div class="form-group">
+            <label for="country">Country: </label>
+            <input class="form-control" type="text" id="country" name="country" placeholder="Poland">
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}
