@@ -9,6 +9,11 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
+    http_client:
+        max_host_connections: 10
+        default_options:
+            max_redirects: 7
+
     #esi: true
     #fragments: true
     php_errors:
