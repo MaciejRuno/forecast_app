@@ -25,3 +25,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\ApiClient\OpenWeatherApiClient:
+        tags: ['forecast.weatherApiClient']
+        arguments: ['%env(resolve:OPEN_WEATHER_API_BASE_URL)%', '%env(resolve:OPEN_WEATHER_API_KEY)%']
+        
+    App\Service\ApiClient\YahooApiClient:
+        tags: ['forecast.weatherApiClient']
+        arguments: ['%env(resolve:YAHOO_API_BASE_URL)%', '%env(resolve:YAHOO_API_KEY)%']
