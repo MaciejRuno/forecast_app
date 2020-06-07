@@ -28,8 +28,16 @@ services:
 
     App\Service\ApiClient\OpenWeatherApiClient:
         tags: ['forecast.weatherApiClient']
-        arguments: ['%env(resolve:OPEN_WEATHER_API_BASE_URL)%', '%env(resolve:OPEN_WEATHER_API_KEY)%']
+        arguments: 
+            [
+            '%env(resolve:OPEN_WEATHER_API_BASE_URL)%',
+            '%env(resolve:OPEN_WEATHER_API_KEY)%'
+            ]
         
-    App\Service\ApiClient\YahooApiClient:
+    App\Service\ApiClient\AccuWeatherApiClient:
         tags: ['forecast.weatherApiClient']
-        arguments: ['%env(resolve:YAHOO_API_BASE_URL)%', '%env(resolve:YAHOO_API_KEY)%']
+        arguments: 
+            [
+            '%env(resolve:ACCU_WEATHER_API_BASE_URL)%', 
+            '%env(resolve:ACCU_WEATHER_API_KEY)%'
+            ]
