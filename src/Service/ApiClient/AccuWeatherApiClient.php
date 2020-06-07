@@ -8,9 +8,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AccuWeatherApiClient implements WeatherApiClientInterface
 {
-    private $baseUrl;
-    private $apiKey;
-    private $client;
+    use ApiClientBaseTrait;
 
     public function __construct
     (
@@ -18,9 +16,7 @@ class AccuWeatherApiClient implements WeatherApiClientInterface
         string $apiKey, 
         HttpClientInterface $client
     ) {
-        $this->baseUrl = $baseUrl;
-        $this->apiKey = $apiKey;
-        $this->client = $client;
+        $this->baseConfig($baseUrl, $apiKey, $client);
     }
 
     public function getApiData(string $city, string $country): ApiData
