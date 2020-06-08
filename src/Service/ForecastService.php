@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\ApiData;
 use App\Entity\RequestData;
 use App\Service\ApiClient\WeatherApiClientInterface;
 
@@ -10,11 +11,20 @@ class ForecastService
 {
     private $weatherApis = [];
 
+    /**
+     * @param WeatherApiClientInterface $api
+     */
     public function addWeatherApi(WeatherApiClientInterface $api)
     {
         $this->weatherApis[] = $api;
     }
 
+    /**
+     * @param string $city
+     * @param string $country
+     * @param string $clientIp
+     * @return RequestData|null
+     */
     public function getRequestData
     (
         string $city, 
@@ -40,6 +50,10 @@ class ForecastService
         return $requestData;
     }
 
+    /**
+     * @param RequestData $requestData
+     * @return array
+     */
     public function getForecastFromRequestData(RequestData $requestData): array
     {
         $allForecasts = [
@@ -49,6 +63,7 @@ class ForecastService
             'rainfall' => [],
         ];
 
+        /** @var ApiData $apiData */
         foreach ($requestData->getApiData() as $apiData) {
             $allForecasts['temperature'][] = $apiData->getTemperature();
             $allForecasts['wind'][] = $apiData->getWind();

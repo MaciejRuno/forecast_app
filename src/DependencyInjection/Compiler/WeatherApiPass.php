@@ -10,6 +10,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class WeatherApiPass implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         // always first check if the primary service is defined

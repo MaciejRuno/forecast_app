@@ -12,6 +12,9 @@ class ForecastController extends AbstractController
 {
     /**
      * @Route("/forecast", name="forecast")
+     * @param Request $request
+     * @param ForecastService $forecastService
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, ForecastService $forecastService)
     {
