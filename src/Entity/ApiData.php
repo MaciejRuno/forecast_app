@@ -36,7 +36,7 @@ class ApiData
     /**
      * @ORM\Column(type="float")
      */
-    private $rainfall_chance;
+    private $rainfall;
 
     /**
      * @ORM\Column(type="datetime")
@@ -89,14 +89,14 @@ class ApiData
         return $this;
     }
 
-    public function getRainfallChance(): ?float
+    public function getRainfall(): ?float
     {
-        return $this->rainfall_chance;
+        return $this->rainfall;
     }
 
-    public function setRainfallChance(float $rainfall_chance): self
+    public function setRainfall(float $rainfall): self
     {
-        $this->rainfall_chance = $rainfall_chance;
+        $this->rainfall = $rainfall;
 
         return $this;
     }
