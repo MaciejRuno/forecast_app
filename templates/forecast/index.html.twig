@@ -5,7 +5,13 @@
 <div class="navbar sticky-top navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Home</a>
 </div>
-<div class="container">
+<div class="d-flex justify-content-center container">
+    <div class="d-flex container flex-column">
+        <div>temperature: {{ temperature }} °C</div>
+        <div>wind: {{ wind }} m/s</div>
+        <div>humidity: {{ humidity }} %</div>
+        <div>rainfall: {{ rainfall }} mm/h</div>
+    </div>
 </div>
 
 {% endblock %}
