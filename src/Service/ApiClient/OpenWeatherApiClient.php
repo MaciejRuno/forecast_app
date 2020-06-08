@@ -19,8 +19,35 @@ class OpenWeatherApiClient implements WeatherApiClientInterface
         $this->baseConfig($baseUrl, $apiKey, $client);
     }
 
-    public function getApiData(string $city, string $country): ApiData
+    public function getApiData(string $city, string $country): ?ApiData
     {
+        $queryString = sprintf(
+            "%s,%s",
+            strtolower($city),
+            strtolower($country)
+        );
 
+        $response = $this->client->request(
+            'GET',
+            $this->baseUrl,
+            [
+                'query' => [
+                    'q' => $queryString,
+                    'appid' => $this->apiKey,
+                    'units' => 'metric',
+                ],
+            ],
+        );
+
+        $data = $response->toArray();
+
+        $apiData = new ApiData();
+        $apiData->setTemperature($data['main']['temp']);
+        $apiData->setWind($data['wind']['speed']);
+        $apiData->setHumidity($data['main']['humidity']);
+        $apiData->setRainfall($data['rain']['1h'] ?? 0);
+        $apiData->setCreatedAt(new \DateTime());
+
+        return $apiData;
     }
 }

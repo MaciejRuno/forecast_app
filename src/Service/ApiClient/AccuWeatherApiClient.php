@@ -19,7 +19,8 @@ class AccuWeatherApiClient implements WeatherApiClientInterface
         $this->baseConfig($baseUrl, $apiKey, $client);
     }
 
-    public function getApiData(string $city, string $country): ApiData
+    public function getApiData(string $city, string $country): ?ApiData
     {
+        return null;
     }
 }

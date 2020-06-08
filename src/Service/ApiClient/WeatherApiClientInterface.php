@@ -7,5 +7,5 @@ use App\Entity\ApiData;
 
 interface WeatherApiClientInterface
 {
-    public function getApiData(string $city, string $country): ApiData;
+    public function getApiData(string $city, string $country): ?ApiData;
 }
