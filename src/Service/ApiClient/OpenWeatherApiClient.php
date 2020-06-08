@@ -10,6 +10,8 @@ class OpenWeatherApiClient implements WeatherApiClientInterface
 {
     use ApiClientBaseTrait;
 
+    const FORECAST_ENDPOINT = 'data/2.5/weather';
+
     /**
      * OpenWeatherApiClient constructor.
      * @param string $baseUrl
@@ -40,7 +42,7 @@ class OpenWeatherApiClient implements WeatherApiClientInterface
 
         $response = $this->client->request(
             'GET',
-            $this->baseUrl,
+            $this->baseUrl . $this::FORECAST_ENDPOINT,
             [
                 'query' => [
                     'q' => $queryString,
