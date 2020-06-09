@@ -49,6 +49,8 @@ class ForecastService
         $requestData = new RequestData();
         $requestData->setUserIp(\ip2long($clientIp));
         $requestData->setCreatedAt(new \DateTime());
+        $requestData->setCity($city);
+        $requestData->setCountry($country);
 
         foreach ($this->weatherApis as $api) {
             $cacheKey = sprintf(
