@@ -21,7 +21,7 @@ class RequestData
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     private $user_ip;
 
@@ -81,7 +81,7 @@ class RequestData
     {
         if (!$this->api_data->contains($apiData)) {
             $this->api_data[] = $apiData;
-            $apiData->setRequestId($this);
+            $apiData->setRequest($this);
         }
 
         return $this;

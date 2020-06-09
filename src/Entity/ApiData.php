@@ -44,7 +44,7 @@ class ApiData
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RequestData::class, inversedBy="api_data")
+     * @ORM\ManyToOne(targetEntity=RequestData::class, inversedBy="api_data", cascade={"persist"})
      */
     private $request;
 
