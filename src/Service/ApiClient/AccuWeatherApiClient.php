@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Service\ApiClient;
 
 use App\Entity\ApiData;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AccuWeatherApiClient implements WeatherApiClientInterface
@@ -12,20 +13,25 @@ class AccuWeatherApiClient implements WeatherApiClientInterface
 
     const LOCATION_ENDPOINT = 'locations/v1/cities/search';
     const FORECAST_ENDPOINT = 'currentconditions/v1/';
+    
+    private $logger;
 
     /**
      * AccuWeatherApiClient constructor.
      * @param string $baseUrl
      * @param string $apiKey
      * @param HttpClientInterface $client
+     * @param LoggerInterface $logger
      */
     public function __construct
     (
         string $baseUrl, 
         string $apiKey, 
-        HttpClientInterface $client
+        HttpClientInterface $client,
+        LoggerInterface $logger
     ) {
         $this->baseConfig($baseUrl, $apiKey, $client);
+        $this->logger = $logger;
     }
 
     /**
@@ -35,8 +41,13 @@ class AccuWeatherApiClient implements WeatherApiClientInterface
      */
     public function getApiData(string $city, string $country): ?ApiData
     {
-        $locationId = $this->getLocationId($city, $country);
-        $data = $this->getForecast($locationId);
+        try {
+            $locationId = $this->getLocationId($city, $country);
+            $data = $this->getForecast($locationId);
+        } catch (\Exception $e) {
+            $this->logger->error("Could not get data from AccuWeather");
+            return null;
+        }
 
         $apiData = new ApiData();
         $apiData->setTemperature($data[0]['Temperature']['Metric']['Value']);

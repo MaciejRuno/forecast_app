@@ -6,6 +6,11 @@
 
 <div class="d-flex justify-content-center container">
     <form class="d-flex flex-column" action="/forecast" method="get">
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="form-group">
             <label for="city">City: </label>
             <input class="form-control" type="text" id="city" name="city" placeholder="Warsaw">

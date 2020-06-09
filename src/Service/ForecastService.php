@@ -73,6 +73,7 @@ class ForecastService
                 $this->em->persist($apiData);
             }
         }
+        
         $this->em->flush();
         $this->em->clear();
 
@@ -82,9 +83,14 @@ class ForecastService
     /**
      * @param RequestData $requestData
      * @return array
+     * @throws \Exception
      */
     public function getForecastFromRequestData(RequestData $requestData): array
     {
+        if (2 > count($requestData->getApiData())) {
+            throw new \Exception("Less than 2 apis returned a valid response");
+        }
+
         $allForecasts = [
             'temperature' => [],
             'wind' => [],

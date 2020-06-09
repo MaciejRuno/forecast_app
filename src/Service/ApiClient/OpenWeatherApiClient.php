@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Service\ApiClient;
 
 use App\Entity\ApiData;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OpenWeatherApiClient implements WeatherApiClientInterface
@@ -12,19 +13,24 @@ class OpenWeatherApiClient implements WeatherApiClientInterface
 
     const FORECAST_ENDPOINT = 'data/2.5/weather';
 
+    private $logger;
+
     /**
      * OpenWeatherApiClient constructor.
      * @param string $baseUrl
      * @param string $apiKey
      * @param HttpClientInterface $client
+     * @param LoggerInterface $logger
      */
     public function __construct
     (
         string $baseUrl, 
         string $apiKey, 
-        HttpClientInterface $client
+        HttpClientInterface $client,
+        LoggerInterface $logger
     ) {
         $this->baseConfig($baseUrl, $apiKey, $client);
+        $this->logger = $logger;
     }
 
     /**
@@ -40,19 +46,25 @@ class OpenWeatherApiClient implements WeatherApiClientInterface
             strtolower($country)
         );
 
-        $response = $this->client->request(
-            'GET',
-            $this->baseUrl . $this::FORECAST_ENDPOINT,
-            [
-                'query' => [
-                    'q' => $queryString,
-                    'appid' => $this->apiKey,
-                    'units' => 'metric',
-                ],
-            ],
-        );
 
-        $data = $response->toArray();
+        try {
+            $response = $this->client->request(
+                'GET',
+                $this->baseUrl . $this::FORECAST_ENDPOINT,
+                [
+                    'query' => [
+                        'q' => $queryString,
+                        'appid' => $this->apiKey,
+                        'units' => 'metric',
+                    ],
+                ],
+            );
+
+            $data = $response->toArray();
+        } catch (\Exception $e) {
+            $this->logger->error("Could not get data from OpenWeather");
+            return null;
+        }
 
         $apiData = new ApiData();
         $apiData->setTemperature($data['main']['temp']);
