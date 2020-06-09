@@ -7,17 +7,23 @@ use App\Entity\ApiData;
 use App\Entity\RequestData;
 use App\Service\ApiClient\WeatherApiClientInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class ForecastService 
 {
     private $em;
-    private $requestRepository;
+    private $cache;
 
     private $weatherApis = [];
 
-    public function __construct(EntityManagerInterface $em)
-    {
+    public function __construct
+    (
+        EntityManagerInterface $em,
+        CacheInterface $cache
+    ) {
         $this->em = $em;
+        $this->cache = $cache;
     }
 
     /**
@@ -45,8 +51,22 @@ class ForecastService
         $requestData->setCreatedAt(new \DateTime());
 
         foreach ($this->weatherApis as $api) {
+            $cacheKey = sprintf(
+                "%s.%s.%s", 
+                (new \ReflectionClass($api))->getShortName(), 
+                $city, 
+                $country
+            );
+
             /** @var ApiData $apiData */
-            $apiData = $api->getApiData($city, $country);
+            $apiData = $this->cache->get(
+                $cacheKey, 
+                function (ItemInterface $item) use ($api, $city, $country) {
+                    $item->expiresAfter(60 * 5); // 5 min cache
+                
+                    return $api->getApiData($city, $country);
+                }
+            );
 
             if ($apiData) {
                 $requestData->addApiData($apiData);
